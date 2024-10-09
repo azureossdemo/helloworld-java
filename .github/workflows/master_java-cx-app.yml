@@ -8,17 +8,20 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest        
-      
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_B78514198A784BE8B581732724D8E8AE }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_0245A07C8BE648BBADD0E77CDAE739EF }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_9E43738665714DA3ADD14BC357173373 }}
+    runs-on: ubuntu-latest
 
-      
-      - name: Deploy to Azure Web App
+    steps:  # Add the 'steps' key here to define the steps inside the job
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Login to Azure
+      uses: azure/login@v2
+      with:
+        client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_B78514198A784BE8B581732724D8E8AE }}
+        tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_0245A07C8BE648BBADD0E77CDAE739EF }}
+        subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_9E43738665714DA3ADD14BC357173373 }}
+
+    - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v3
       with:
         app-name: 'java-cx-app'
