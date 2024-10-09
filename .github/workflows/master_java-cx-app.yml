@@ -6,11 +6,15 @@ on:
       - master  # Trigger deployment on push to the main branch
   workflow_dispatch:  # Allow manual triggering of the workflow
 
+permissions:
+  id-token: write  # Allow the workflow to request an ID token
+  contents: read   # Allow reading the repository content (default)
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
-    steps:  # Add the 'steps' key here to define the steps inside the job
+    steps:
     - name: Checkout code
       uses: actions/checkout@v3
 
@@ -20,6 +24,11 @@ jobs:
         client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_B78514198A784BE8B581732724D8E8AE }}
         tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_0245A07C8BE648BBADD0E77CDAE739EF }}
         subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_9E43738665714DA3ADD14BC357173373 }}
+        enable-AzPSSession: false
+        environment: azurecloud
+        allow-no-subscriptions: false
+        audience: api://AzureADTokenExchange
+        auth-type: SERVICE_PRINCIPAL
 
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v3
